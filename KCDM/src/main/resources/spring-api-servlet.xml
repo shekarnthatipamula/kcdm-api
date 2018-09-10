@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2017. Niranta Services and Solutions Pvt. Ltd.
+  -->
+
+<beans xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task.xsd
+        ">
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <!-- Application specific configuration -->
+                <value>classpath:cron-config.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <task:annotation-driven scheduler="taskScheduler" executor="taskExecutor"/>
+    <task:scheduler id="taskScheduler"/>
+    <task:executor id="taskExecutor"/>
+    <!--<task:scheduled-tasks scheduler="scheduler">-->
+    <task:scheduled-tasks>
+        <task:scheduled ref="studentScheduler" method="displayStudents" cron="${cron.expression}"/>
+    </task:scheduled-tasks>
+
+    <!-- ShedLock beans -->
+<!--    <bean id="scheduler" class="net.javacrumbs.shedlock.spring.SpringLockableTaskSchedulerFactory"
+          factory-method="newLockableTaskScheduler">
+        <constructor-arg>
+            &lt;!&ndash; The original scheduler &ndash;&gt;
+            <task:scheduler id="taskScheduler" pool-size="10"/>
+        </constructor-arg>
+        <constructor-arg ref="lockProvider"/>
+    </bean>
+    <bean id="lockProvider" class="net.javacrumbs.shedlock.provider.jdbctemplate.JdbcTemplateLockProvider">
+        <constructor-arg ref="dataSource"/>
+    </bean>-->
+
+</beans>

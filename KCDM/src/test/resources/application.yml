@@ -1,0 +1,22 @@
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+spring:
+    datasource:
+        url: @test.jdbc.config.db.url@
+        driver-class-name: com.mysql.jdbc.Driver
+        username: @test.jdbc.config.db.username@
+        password: @test.jdbc.config.db.password@
+        #hikari
+        type: com.zaxxer.hikari.HikariDataSource
+        hikari:
+            poolName: springHikariCP
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: update
+server:
+    port: 8080
